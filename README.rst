@@ -6,12 +6,38 @@ from `fabric3 <https://pypi.org/project/Fabric3/>`_ scripts to provide common im
 typical tasks for projects that are using
 `tequila <https://github.com/caktus/tequila>`_ for provisioning and deploy.
 
+License
+-------
+
+This Ansible role is released under the BSD License.  See the `LICENSE
+<https://github.com/caktus/tequila-django/blob/master/LICENSE>`_ file for
+more details.
+
+Releases
+--------
+
+We attempt to not make changes that break backward-compatibility.
+Nonetheless, you should *always* use a pinned version of this
+repo to be safe.  Check the
+`release history <RELEASES.rst>`_ before upgrading for
+any notes or warnings.
+
+Contributing
+------------
+
+If you think you've found a bug or are interested in contributing to
+this project, check out `tequila-fab on Github
+<https://github.com/caktus/tequila-fab>`_.
+
+Development sponsored by `Caktus Consulting Group, LLC
+<http://www.caktusgroup.com/services>`_.
+
 Installation
 ------------
 
 pip install into your virtualenv::
 
-    $ pip install git+https://github.com/dpoirier/tequila-fab@BRANCHNAME_OR_COMMIT_OR_TAG#egg=tequila-fab
+    $ pip install git+https://github.com/caktus/tequila-fab@X.Y.Z#egg=tequila-fab
 
 Usage
 -----
@@ -147,3 +173,10 @@ Run Ansible galaxy's role installer for the requirements in
 
     ``deploy`` and ``bootstrap`` also check and refuse to
     run if versions are wrong.
+
+.. note::
+
+    Ansible galaxy always installs roles into the first directory
+    on your roles_path by default. Maybe install_roles ought to
+    override that on the command line and always install to
+    deployment/roles?
