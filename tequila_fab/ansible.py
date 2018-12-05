@@ -7,6 +7,7 @@ from typing import Optional, List
 
 import yaml
 from fabric.api import local
+from fabric.colors import red, green, yellow
 from fabric.decorators import task
 
 
@@ -100,28 +101,28 @@ def check_role_versions():
         install_dir = find_install_role(name)
         if not install_dir:
             okay = False
-            print("ERROR: role %s not installed" % (name,))
+            print(red("ERROR: role %s not installed" % (name,)))
             continue
         meta_path = os.path.join(install_dir, 'meta/.galaxy_install_info')
         if os.path.exists(meta_path):
             meta = yaml.load(open(meta_path))
             if meta['version'] != req['version']:
-                print("ERROR: role %s at %s is version %s, should be version %s" % (
+                print(red("ERROR: role %s at %s is version %s, should be version %s" % (
                     name,
                     install_dir,
                     meta['version'],
                     req['version']
-                ))
+                )))
                 okay = False
                 bad.append(install_dir)
             else:
-                print("GOOD:  role %s %s at %s" % (name, meta['version'], install_dir))
+                print(green("GOOD:  role %s %s at %s" % (name, meta['version'], install_dir)))
         else:
             # User must have installed this locally, don't check version
-            print("SKIP:  role %s at %s appears to have been locally installed" % (name, install_dir))
+            print(yellow("SKIP:  role %s at %s appears to have been locally installed" % (name, install_dir)))
     if not okay:
-        print("Ansible galaxy role requirements are not satisfied, quitting.  The simplest fix is to delete "
-              "the roles that have wrong versions, then run ``fab install_roles`` again.")
+        print(red("Ansible galaxy role requirements are not satisfied, quitting.  The simplest fix is to delete "
+                  "the roles that have wrong versions, then run ``fab install_roles`` again."))
         if bad:
             print("E.g.")
             print("$ rm -r %s" % " ".join(badname for badname in bad))

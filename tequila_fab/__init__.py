@@ -8,6 +8,7 @@ Add tasks that should be exported to ``__ALL__``.
 """
 
 from fabric.api import env, local, require, task
+from fabric.colors import red
 from fabric.tasks import execute
 
 from .ansible import check_role_versions, install_roles
@@ -42,10 +43,12 @@ def bootstrap():
 def create_superuser(email):
     """
     Usage: fab <ENV> create_superuser:dpoirier@caktusgroup.com
+
+    Requires a create_superuser playbook in the ansible configuration.
     """
     require('environment')
     deploy('create_superuser', extra_vars={'EMAIL': email})
-    print("YOU SHOULD NOW DO A PASSWORD RESET")
+    print(red("YOU SHOULD NOW DO A PASSWORD RESET"))
 
 
 @task
