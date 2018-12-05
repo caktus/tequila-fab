@@ -3,7 +3,8 @@ import functools
 import os
 import os.path
 import sys
-from typing import Optional, List
+
+# FIXME: when we drop Python 2 support, change the comment-style type annotations to Python 3 style.
 
 import yaml
 from fabric.api import local
@@ -12,7 +13,7 @@ from fabric.decorators import task
 
 
 @functools.lru_cache(maxsize=1)
-def find_ansible_config_file() -> Optional[str]:
+def find_ansible_config_file():  # type: () -> Optional[str]
     """
     Return path to the ansible config file that ansible would use,
     or None if no config file found.
@@ -37,7 +38,7 @@ def find_ansible_config_file() -> Optional[str]:
 
 
 @functools.lru_cache(maxsize=1)
-def get_ansible_configuration() -> configparser.ConfigParser:
+def get_ansible_configuration():  # type: () -> configparser.ConfigParser
     config = configparser.ConfigParser()
     config['DEFAULTS'] = {
         'roles_path': os.path.join(os.environ['HOME'], '/.ansible/roles') + ':/usr/share/ansible/roles:/etc/ansible/roles'
@@ -50,7 +51,7 @@ def get_ansible_configuration() -> configparser.ConfigParser:
 
 
 @functools.lru_cache(maxsize=1)
-def get_roles_path() -> List[str]:
+def get_roles_path():  # type: () -> List[str]
     """
     Return list of directories where Ansible will look for roles
     """
@@ -65,7 +66,7 @@ def install_roles():
     local('ansible-galaxy install -i -r deployment/requirements.yml')
 
 
-def find_install_role(rolename) -> Optional[str]:
+def find_install_role(rolename):  # type: str -> Optional[str]
     """
     Returns path of directory where role is installed,
     or None.
@@ -76,15 +77,15 @@ def find_install_role(rolename) -> Optional[str]:
             return dir
 
 
-def req_name(req) -> str:
+def req_name(req):  # type: Dict -> str
     """
-    Return name of the role in the given roles requirements entry
+    Return name of the role in the given role's requirements entry
     """
     return req.get('name', req['src'])
 
 
 @task
-def check_role_versions():
+def check_role_versions():  # type: () -> None
     """
     Usage: fab check_role_versions
 
