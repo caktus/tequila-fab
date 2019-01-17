@@ -71,8 +71,13 @@ likely start with::
 
 for new servers.  Then::
 
-    $ fab <ENVNAME> deploy:playbook=site.yml
+    $ fab <ENVNAME> deploy
     $ fab <ENVNAME> create_superuser:user@example.com
+
+Subsequent deploys can optionally skip the initial provisioning tasks
+by using::
+
+    $ fab <ENVNAME> deploy:play=web
 
 Most of these tasks end up invoking Ansible playbooks from
 `tequila <https://github.com/caktus/tequila>`_, so be sure to
@@ -124,24 +129,18 @@ deploy
 
 Run an ansible deploy for an environment.
 
-By default, runs the playbook *web* and deploys
+By default, runs the playbook *site* and deploys
 the default branch for the specified environment. You
 can override either of those by passing ``playbook`` or
 ``branch`` options.  Do not include ``.yml`` in the playbook
 name.
 
-.. warning::
-
-   By default this runs the playbook *web* which does *not*
-   do a complete provision (it just updates the web servers).
-   For initial deploys, you probably need to run the playbook
-   *site*. After that, you can just use the default if only
-   the web servers need updating.
-
 .. note::
 
-    Should we change this to default to the site.yml playbook,
-    since that's always safe?
+   The *site* playbooks does the whole provisioning and deploy.
+   You can optionally speed up deploys that don't need to update
+   software and configuration of the base server by using the
+   *web* playbook, which just updates the web servers.
 
 You can also set/override any Ansible variable by passing
 the ``extra_vars`` option.  Here's the usage::

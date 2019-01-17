@@ -6,6 +6,7 @@ to see an overview of tasks by just running
 
 Add tasks that should be exported to ``__ALL__``.
 """
+import os
 
 from fabric.api import env, local, require, task
 from fabric.colors import red
@@ -60,12 +61,12 @@ def deploy(play=None, extra_vars=None, branch=None):
     execute(check_role_versions)
     cmd = ["ansible-playbook",
            "-i deployment/environments/{env}/inventory".format(env=env.environment)]
-    playbook = play or "web"
+    playbook = play or "site"
     cmd.append("deployment/playbooks/{playbook}.yml".format(playbook=playbook))
-    cmd.append("--user {user}".format(user=env.user))
     if extra_vars:
         cmd.append("--extra-vars='{extra_vars}'".format(extra_vars=extra_vars))
     if branch:
         cmd.append("-e repo_branch=%s" % branch)
+    cmd.append("-e ansible_working_directory=%s" % os.getcwd())
     local(" ".join(cmd))
 
