@@ -15,6 +15,11 @@ from fabric.tasks import execute
 from .ansible import check_role_versions, install_roles
 
 #
+# Initialize env flags
+#
+env.devflag = False
+
+#
 # KEEP TASKS IN ALPHABETICAL ORDER
 #
 __ALL__ = [
@@ -37,7 +42,7 @@ def bootstrap():
     install_roles()
     execute(check_role_versions)
     deploy("bootstrap_python")
-    deploy("site", extra_vars='{"unmanaged_users": [ubuntu]}')
+    deploy("site")
 
 
 @task
@@ -70,3 +75,12 @@ def deploy(play=None, extra_vars=None, branch=None):
     cmd.append("-e ansible_working_directory=%s" % os.getcwd())
     local(" ".join(cmd))
 
+
+@task
+def dev():
+    """
+    Usage: fab dev <other commands>
+
+    Turns on 'dev' flag which may change behavior of other commands.
+    """
+    env.devflag = True

@@ -96,6 +96,7 @@ bootstrap
 
 Does the simplest possible install of Python v2 so that Ansible can
 run from then on.
+
 Use when the target servers might not even have Python installed.::
 
     $ fab <ENVNAME> bootstrap
@@ -104,7 +105,10 @@ check_role_versions
 ...................
 
 Check that the roles required in requirements.yml are all installed
-and at the right version, and fail if not.
+and at the right version. If any are not installed, install them.
+If any are installed from Galaxy but at the wrong version, fail. If
+any are installed locally rather than from Galaxy, fail, unless the
+dev flag is set (see the `dev` task).
 
 This gets run automatically before a deploy or bootstrap, so won't
 often need to be run by itself.::
@@ -153,6 +157,11 @@ Some examples::
     $ fab staging deploy:playbook=site
     $ fab staging deploy:branch=PRJ-9999
     $ fab staging deploy:playbook=site:extra_vars=gunicorn_num_workers=8
+
+dev
+...
+
+Turn on 'dev' flag which can change the behavior of other tasks.
 
 install_roles
 .............
