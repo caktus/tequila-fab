@@ -6,7 +6,7 @@ import os.path
 # FIXME: when we drop Python 2 support, change the comment-style type annotations to Python 3 style.
 
 import yaml
-from fabric.api import local
+from fabric.api import env, local
 from fabric.colors import red, green, yellow
 from fabric.decorators import task
 from fabric.tasks import execute
