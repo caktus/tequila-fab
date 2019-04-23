@@ -2,14 +2,15 @@ import configparser
 import functools
 import os
 import os.path
-import sys
 
 # FIXME: when we drop Python 2 support, change the comment-style type annotations to Python 3 style.
 
 import yaml
-from fabric.api import local
+from fabric.api import env, local
 from fabric.colors import red, green, yellow
 from fabric.decorators import task
+from fabric.tasks import execute
+from fabric.utils import abort
 
 
 @functools.lru_cache(maxsize=1)
@@ -89,20 +90,27 @@ def check_role_versions():  # type: () -> None
     """
     Usage: fab check_role_versions
 
-    Fails if the exact versions of roles specified in deployment/requirements.yml
-    are not installed.
+    If the wrong versions of any roles are installed, per deployment/requirements.yml,
+    fail.
+
+    If any required roles are not installed, install them.
+
+    If env.devflag is true, warns but ignores any locally installed roles. Otherwise,
+    locally installed roles are a fatal error. See the `dev` task
+    to set env.devflag.
     """
 
     okay = True  # False if we've spotted any problems
     bad = []  # Paths to where missing roles should be installed, or where bad version roles are installed
     requirements = yaml.load(open("deployment/requirements.yml"))
     requirements = sorted(requirements, key=req_name)
+    requirements_to_install = False
     for req in requirements:
         name = req_name(req)
         install_dir = find_install_role(name)
         if not install_dir:
-            okay = False
-            print(red("ERROR: role %s not installed" % (name,)))
+            print(yellow("WARNING: role %s not installed" % (name,)))
+            requirements_to_install = True
             continue
         meta_path = os.path.join(install_dir, 'meta/.galaxy_install_info')
         if os.path.exists(meta_path):
@@ -120,11 +128,20 @@ def check_role_versions():  # type: () -> None
                 print(green("GOOD:  role %s %s at %s" % (name, meta['version'], install_dir)))
         else:
             # User must have installed this locally, don't check version
-            print(yellow("SKIP:  role %s at %s appears to have been locally installed" % (name, install_dir)))
+            if env.devflag:
+                print(yellow("SKIP:  role %s at %s appears to have been locally installed" % (name, install_dir)))
+            else:
+                okay = False
+                print(red("ERROR:  role %s at %s appears to have been locally installed, will not continue" % (name, install_dir)))
+                print(red("To ignore this error, add 'dev' argument to fab command before this"))
+
+    if requirements_to_install and okay:
+        execute(install_roles)
+
     if not okay:
         print(red("Ansible galaxy role requirements are not satisfied, quitting.  The simplest fix is to delete "
                   "the roles that have wrong versions, then run ``fab install_roles`` again."))
         if bad:
             print("E.g.")
             print("$ rm -r %s" % " ".join(badname for badname in bad))
-        sys.exit(1)
+        abort('check_installed_roles failed')

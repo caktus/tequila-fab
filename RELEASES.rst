@@ -1,6 +1,13 @@
 Releases
 ========
 
+* next
+
+  * If a required role is not installed, check_installed_roles installs it.
+  * New task 'dev' sets a 'dev' flag that can affect behavior of other tasks.
+  * If a role is installed locally instead of from Galaxy, check_installed_roles
+    fails unless the 'dev' flag is set.
+
 * 0.0.2, 2019-01-17
 
   * Add Python 2.7 support.
