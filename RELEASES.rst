@@ -1,6 +1,11 @@
 Releases
 ========
 
+* next
+
+  * Undo change to how unmanaged users are set on bootstrap deploy that
+    shouldn't have been in the last release.
+
 * 0.0.3, 2019-04-23
 
   * If a required role is not installed, check_installed_roles installs it.
