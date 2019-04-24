@@ -42,7 +42,7 @@ def bootstrap():
     install_roles()
     execute(check_role_versions)
     deploy("bootstrap_python")
-    deploy("site")
+    deploy("site", extra_vars='{"unmanaged_users": [ubuntu]}')
 
 
 @task
