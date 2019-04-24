@@ -1,7 +1,7 @@
 Releases
 ========
 
-* next
+* 0.0.4, 2019-04-24
 
   * Undo change to how unmanaged users are set on bootstrap deploy that
     shouldn't have been in the last release.
