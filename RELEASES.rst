@@ -1,6 +1,10 @@
 Releases
 ========
 
+* 0.0.5, 2019-06-17
+
+  * Fix version number in setup.py.
+
 * 0.0.4, 2019-04-24
 
   * Undo change to how unmanaged users are set on bootstrap deploy that

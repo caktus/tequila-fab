@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='tequila-fab',
-    version='0.0.2',
+    version='0.0.5',
     packages=[
         'tequila_fab',
     ],
