@@ -1,6 +1,11 @@
 Releases
 ========
 
+* 0.0.6, 2019-08-06
+
+  * New task 'recreate_venv' allows virtualenv to be recreated. Requires
+    tequila-django >= 0.9.24.
+
 * 0.0.5, 2019-06-17
 
   * Fix version number in setup.py.

@@ -147,16 +147,17 @@ name.
    *web* playbook, which just updates the web servers.
 
 You can also set/override any Ansible variable by passing
-the ``extra_vars`` option.  Here's the usage::
+the ``extra_vars`` option (`Provided you carefully quote things
+<https://github.com/fabric/fabric/issues/1306>`_).  Here's the usage::
 
-    $ fab <ENV> deploy[:playbook=NNNN][:extra_vars=aaa=1,bbb=2][:branch=xxx]
+    $ fab <ENV> deploy[:playbook=NNNN][:extra_vars="aaa\=1,bbb\=2"][:branch=xxx]
 
 Some examples::
 
     $ fab staging deploy
     $ fab staging deploy:playbook=site
     $ fab staging deploy:branch=PRJ-9999
-    $ fab staging deploy:playbook=site:extra_vars=gunicorn_num_workers=8
+    $ fab staging deploy:playbook=site:extra_vars="gunicorn_num_workers\=8"
 
 dev
 ...
@@ -188,3 +189,14 @@ Run Ansible galaxy's role installer for the requirements in
     on your roles_path by default. Maybe install_roles ought to
     override that on the command line and always install to
     deployment/roles?
+
+recreate_venv
+.............
+
+Force ansible to delete the virtualenv directory so that it gets
+recreated. This allows us to upgrade the Python binary in the
+virtualenv.
+
+.. note::
+
+   This also does a deploy of the ``web`` role.
