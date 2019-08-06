@@ -84,3 +84,16 @@ def dev():
     Turns on 'dev' flag which may change behavior of other commands.
     """
     env.devflag = True
+
+
+@task
+def recreate_venv():
+    """
+    Usage: <ENV> fab recreate_venv
+
+    Forces the virtualenv to be deleted and then deploys the web tasks
+    so that a new virtualenv is created with a refreshed copy of the
+    Python binary.
+    """
+    require('environment')
+    deploy('web', extra_vars={'force_recreate_venv': True})
