@@ -58,7 +58,7 @@ def create_superuser(email):
 
 
 @task
-def deploy(play=None, extra_vars=None, branch=None):
+def deploy(play=None, extra_vars=None, branch=None, limit=None):
     """
     Usage: fab <ENV> deploy[:playbook=NNNN][:extra_vars=aaa=1,bbb=2][:branch=xxx]
     """
@@ -72,6 +72,8 @@ def deploy(play=None, extra_vars=None, branch=None):
         cmd.append("--extra-vars='{extra_vars}'".format(extra_vars=extra_vars))
     if branch:
         cmd.append("-e repo_branch=%s" % branch)
+    if limit:
+        cmd.append("-l %s" % limit)
     cmd.append("-e ansible_working_directory=%s" % os.getcwd())
     local(" ".join(cmd))
 

@@ -148,7 +148,8 @@ name.
 
 You can also set/override any Ansible variable by passing
 the ``extra_vars`` option (`Provided you carefully quote things
-<https://github.com/fabric/fabric/issues/1306>`_).  Here's the usage::
+<https://github.com/fabric/fabric/issues/1306>`_) and/or pass through
+an argument to ``ansible-playbook``'s ``--limit`` option.  Here's the usage::
 
     $ fab <ENV> deploy[:playbook=NNNN][:extra_vars="aaa\=1,bbb\=2"][:branch=xxx]
 
@@ -158,6 +159,7 @@ Some examples::
     $ fab staging deploy:playbook=site
     $ fab staging deploy:branch=PRJ-9999
     $ fab staging deploy:playbook=site:extra_vars="gunicorn_num_workers\=8"
+    $ fab staging deploy:limit=bastion
 
 dev
 ...
