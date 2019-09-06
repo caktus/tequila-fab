@@ -1,6 +1,11 @@
 Releases
 ========
 
+* 0.0.7, 2019-09-06
+
+  * Add a new "limit" option to the deploy task to pass a "--limit" through
+    to ansible-playbook.
+
 * 0.0.6, 2019-08-06
 
   * New task 'recreate_venv' allows virtualenv to be recreated. Requires
