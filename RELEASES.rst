@@ -1,6 +1,11 @@
 Releases
 ========
 
+* 0.0.8, 2019-10-02
+
+  * Add a new "verbose" option to the deploy task to allow passing
+    verbosity levels, e.g. ``v``, ``vv``, etc.
+
 * 0.0.7, 2019-09-06
 
   * Add a new "limit" option to the deploy task to pass a "--limit" through

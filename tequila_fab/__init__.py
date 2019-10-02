@@ -9,7 +9,7 @@ Add tasks that should be exported to ``__ALL__``.
 import os
 
 from fabric.api import env, local, require, task
-from fabric.colors import red
+from fabric.colors import red, yellow
 from fabric.tasks import execute
 
 from .ansible import check_role_versions, install_roles
@@ -58,7 +58,7 @@ def create_superuser(email):
 
 
 @task
-def deploy(play=None, extra_vars=None, branch=None, limit=None):
+def deploy(play=None, extra_vars=None, branch=None, limit=None, verbose=None):
     """
     Usage: fab <ENV> deploy[:playbook=NNNN][:extra_vars=aaa=1,bbb=2][:branch=xxx]
     """
@@ -74,6 +74,12 @@ def deploy(play=None, extra_vars=None, branch=None, limit=None):
         cmd.append("-e repo_branch=%s" % branch)
     if limit:
         cmd.append("-l %s" % limit)
+    if verbose:
+        if not set(verbose) == {'v'}:
+            verbose = 'vv'
+            msg = "WARNING: Verbosity level not recognized, using -{} as fallback".format(verbose)
+            print(yellow(msg))
+        cmd.append("-%s" % verbose)
     cmd.append("-e ansible_working_directory=%s" % os.getcwd())
     local(" ".join(cmd))
 
