@@ -161,6 +161,13 @@ Some examples::
     $ fab staging deploy:playbook=site:extra_vars="gunicorn_num_workers\=8"
     $ fab staging deploy:limit=bastion
 
+Additional arguments:
+
+* ``verbose``: Control the level of ``ansible-playbook`` `verbosity`_ with this
+  argument by passing ``v``, ``vv``, etc. Example usage: ``deploy[:verbose=vvvv]``
+
+.. _verbosity: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#cmdoption-ansible-playbook-v
+
 dev
 ...
 
