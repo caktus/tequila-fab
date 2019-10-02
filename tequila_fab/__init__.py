@@ -9,7 +9,7 @@ Add tasks that should be exported to ``__ALL__``.
 import os
 
 from fabric.api import env, local, require, task
-from fabric.colors import red
+from fabric.colors import red, yellow
 from fabric.tasks import execute
 
 from .ansible import check_role_versions, install_roles
@@ -75,6 +75,10 @@ def deploy(play=None, extra_vars=None, branch=None, limit=None, verbose=None):
     if limit:
         cmd.append("-l %s" % limit)
     if verbose:
+        if not set(verbose) == {'v'}:
+            verbose = 'vv'
+            msg = "WARNING: Verbosity level not recognized, using -{} as fallback".format(verbose)
+            print(yellow(msg))
         cmd.append("-%s" % verbose)
     cmd.append("-e ansible_working_directory=%s" % os.getcwd())
     local(" ".join(cmd))
